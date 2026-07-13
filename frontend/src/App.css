@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Root variables
+   ========================================================================== */
+
+:root {
+  /* Font */
+  --font-family: 'Inter', 'Segoe UI', sans-serif;
+
+  /* Brand / primary */
+  --color-primary: #1D4ED8;
+  --color-primary-light: #3B82F6;
+  --color-primary-shadow: rgba(29, 78, 216, 0.3);
+
+  /* Neutrals */
+  --color-text: #111827;
+  --color-text-secondary: #374151;
+  --color-gray: #6B7280;
+  --color-gray-light: #9CA3AF;
+  --color-navy: #0F172A;
+  --color-slate: #1F2937;
+  --color-border: #E5E7EB;
+
+  /* Blues */
+  --color-blue-50: #EFF6FF;
+  --color-blue-100: #DBEAFE;
+  --color-blue-200: #BFDBFE;
+  --color-blue-800: #1E40AF;
+
+  /* Backgrounds */
+  --color-bg-alt: #F9FAFB;
+  --color-bg-how: #F8FAFF;
+  --color-bg-green-tint: #F0FDF4;
+
+  /* Accent */
+  --color-amber: #F59E0B;
+
+  /* White / black-based */
+  --color-white: #ffffff;
+  --color-white-20: rgba(255, 255, 255, 0.2);
+  --color-white-40: rgba(255, 255, 255, 0.4);
+  --color-white-95: rgba(255, 255, 255, 0.95);
+  --color-shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   Global / shared
+   ========================================================================== */
+
+.root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.btn-large {
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: var(--font-family);
+}
+
+.btn-large-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-large-outline {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-large-cta-white {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: none;
+}
+
+.btn-large-cta-outline {
+  background: transparent;
+  color: var(--color-white);
+  border: 2px solid var(--color-white-40);
+}
