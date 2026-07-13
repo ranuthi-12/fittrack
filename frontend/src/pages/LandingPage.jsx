@@ -34,6 +34,23 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      <section id="features" className="section-alt">
+        <div className="section-inner">
+          <span className="section-tag">Features</span>
+          <h2 className="section-title">Everything your gym needs</h2>
+          <p className="section-desc">From membership management to workout tracking — FitTrack gives members, trainers, and admins exactly what they need.</p>
+          <div className="feat-grid">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="feat-card">
+                <span className="feat-icon"><f.icon size={28} /></span>
+                <div className="feat-title">{f.title}</div>
+                <div className="feat-desc">{f.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       
     </div>
   );
