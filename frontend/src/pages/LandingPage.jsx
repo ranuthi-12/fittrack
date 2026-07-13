@@ -51,6 +51,21 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <section id="how-it-works" className="section">
+        <span className="section-tag">How it works</span>
+        <h2 className="section-title">Get started in 3 simple steps</h2>
+        <p className="section-desc">FitTrack is designed to be simple. No complicated setup — just register, get your plan, and start tracking.</p>
+        <div className="how-grid">
+          {HOW_IT_WORKS.map((h) => (
+            <div key={h.step} className="how-card">
+              <span className="how-step">{h.step}</span>
+              <div className="how-title">{h.title}</div>
+              <div className="how-desc">{h.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
       
     </div>
   );
