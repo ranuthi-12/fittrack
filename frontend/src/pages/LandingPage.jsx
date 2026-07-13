@@ -66,6 +66,32 @@ export default function LandingPage() {
           ))}
         </div>
       </section>
+
+      <section id="pricing" className="section-alt">
+        <div className="section-inner">
+          <span className="section-tag">Pricing</span>
+          <h2 className="section-title">Simple, transparent pricing</h2>
+          <p className="section-desc">Choose the plan that fits your fitness journey. No hidden fees, no surprises.</p>
+          <div className="pricing-grid">
+            {PLANS.map((plan) => (
+              <div key={plan.name} className={`pricing-card${plan.highlighted ? " pricing-card-highlighted" : ""}`}>
+                {plan.highlighted && <div className="pricing-badge">Most popular</div>}
+                <div className={`pricing-name${plan.highlighted ? " pricing-name-highlighted" : ""}`}>{plan.name}</div>
+                <div className={`pricing-price${plan.highlighted ? " pricing-price-highlighted" : ""}`}>{plan.price}</div>
+                <span className={`pricing-period${plan.highlighted ? " pricing-period-highlighted" : ""}`}>{plan.period}</span>
+                <ul className="pricing-features">
+                  {plan.features.map((f) => (
+                    <li key={f} className={`pricing-feature${plan.highlighted ? " pricing-feature-highlighted" : ""}`}>
+                      <span className={`pricing-check${plan.highlighted ? " pricing-check-highlighted" : ""}`}><Check size={12} /></span>{f}
+                    </li>
+                  ))}
+                </ul>
+                <button className={`pricing-btn${plan.highlighted ? " pricing-btn-highlighted" : ""}`} onClick={() => window.location.href = "/register"}>Get started</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       
     </div>
   );
