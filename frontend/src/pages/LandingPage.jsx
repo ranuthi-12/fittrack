@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2, ArrowRight, Check } from "lucide-react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { FEATURES, HOW_IT_WORKS, PLANS, STATS } from "../data/landingData";
 
 export default function LandingPage() {
@@ -92,6 +93,16 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <section className="cta-section">
+        <h2 className="cta-title">Ready to transform your gym experience?</h2>
+        <p className="cta-desc">Join hundreds of members already using FitTrack to manage their fitness journey.</p>
+        <div className="cta-btns">
+          <button className="btn-large btn-large-cta-white" onClick={() => window.location.href = "/register"}>Create your account</button>
+          <button className="btn-large btn-large-cta-outline" onClick={() => window.location.href = "/login"}>Sign in</button>
+        </div>
+      </section>
+      <Footer />
       
     </div>
   );
