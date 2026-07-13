@@ -82,7 +82,7 @@ export default function Navbar() {
         </div>
 
         <div className="navbar-actions">
-          <button className="btn-outline" onClick={() => goTo("/member")}>
+          <button className="btn-outline" onClick={() => goTo("/login")}>
             Login
           </button>
           <button className="btn-primary" onClick={() => goTo("/register")}>
