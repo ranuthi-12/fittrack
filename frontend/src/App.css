@@ -2477,4 +2477,233 @@
   font-size: 13px;
 }
 
+/* ==========================================================================
+   Progress
+   ========================================================================== */
+
+.pg-period-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 4px;
+  width: fit-content;
+}
+
+.pg-period-tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-gray);
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all 0.15s;
+}
+
+.pg-period-tab-active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.pg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.pg-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.pg-card-header {
+  padding: 20px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pg-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.pg-card-body {
+  padding: 20px 24px 24px;
+}
+
+.pg-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 180px;
+  padding-top: 20px;
+}
+
+.pg-chart-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.pg-chart-bar-outer {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pg-chart-bar {
+  width: 70%;
+  max-width: 40px;
+  background: var(--color-blue-50);
+  border-radius: 6px 6px 2px 2px;
+  transition: height 0.4s ease, background 0.15s;
+  position: relative;
+  cursor: pointer;
+  min-height: 4px;
+}
+
+.pg-chart-bar:hover {
+  background: var(--color-primary);
+}
+
+.pg-chart-bar:hover .pg-chart-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.pg-chart-tooltip {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.15s;
+  pointer-events: none;
+}
+
+.pg-chart-label {
+  font-size: 10px;
+  color: var(--color-gray-light);
+  font-weight: 500;
+}
+
+.pg-measurement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pg-measurement-row:last-child {
+  border-bottom: none;
+}
+
+.pg-measurement-name {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.pg-measurement-values {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pg-measurement-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 48px;
+  text-align: right;
+}
+
+.pg-measurement-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.pg-change-pos {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.pg-change-neg {
+  background: #FEF2F2;
+  color: #DC2626;
+}
+
+.pg-change-neutral {
+  background: var(--color-bg-alt);
+  color: var(--color-gray);
+}
+
+.pg-pr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.pg-pr-card {
+  background: var(--color-bg-alt);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.pg-pr-exercise {
+  font-size: 12px;
+  color: var(--color-gray);
+  margin-bottom: 4px;
+}
+
+.pg-pr-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
+}
+
+.pg-pr-unit {
+  font-size: 12px;
+  color: var(--color-gray-light);
+  font-weight: 500;
+}
+
+.pg-pr-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-gray-light);
+  margin-top: 6px;
+}
+
 
