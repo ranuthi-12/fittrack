@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
-  ClipboardList, Timer, Dumbbell, RefreshCw, Check, CheckCircle2, Play, Moon,
+  ClipboardList, Timer, Dumbbell, RefreshCw, Check, CheckCircle2, Play, Moon, Download,
 } from "lucide-react";
-import { MOCK_WEEK_DATA, MUSCLE_FILTERS, DAY_NAMES } from "../../data/memberData";
+import { MUSCLE_FILTERS, DAY_NAMES } from "../../data/memberData";
+import { workoutAPI, progressAPI } from "../../services/api";
+import { downloadWorkoutPlanPDF } from "../../utils/pdfGenerator";
 
 function getWeekDays() {
   const today = new Date();
@@ -28,16 +30,61 @@ export default function WorkoutPlan() {
 
   const fireToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
 
+  const handleExportPDF = () => {
+    const selectedDayObj = weekDays.find((d) => d.full === selectedDay);
+    const dayName = selectedDayObj ? selectedDayObj.name : "Workout";
+    const userStr = localStorage.getItem("fittrack_user");
+    const user = userStr ? JSON.parse(userStr) : {};
+    downloadWorkoutPlanPDF(`${user.firstName || "Member"} ${user.lastName || ""}`, dayName, exercises);
+    fireToast("Workout Plan PDF downloaded!");
+  };
+
   useEffect(() => {
-    // TODO: Replace with → GET /api/workout/day?date=selectedDay
-    const data = MOCK_WEEK_DATA[selectedDay] || [];
-    setExercises(data.map((e) => ({ ...e, done: false })));
+    workoutAPI.getMyPlan()
+      .then((plan) => {
+        if (plan && Array.isArray(plan.days) && plan.days.length > 0) {
+          const selectedDayObj = weekDays.find((d) => d.full === selectedDay);
+          const dayName = selectedDayObj ? selectedDayObj.name : "Monday";
+          
+          const matchedDay = plan.days.find((d) => d.dayName.toLowerCase().startsWith(dayName.toLowerCase().slice(0, 3))) || plan.days[0];
+          if (matchedDay && Array.isArray(matchedDay.exercises)) {
+            const formatted = matchedDay.exercises.map((e) => ({
+              id: e.id,
+              name: e.exerciseName,
+              sets: `${e.sets || 3} × ${e.reps || 10}`,
+              weight: "Bodyweight / Free Weight",
+              rest: "60s",
+              muscle: matchedDay.focus || "Full Body",
+              done: false,
+            }));
+            setExercises(formatted);
+            return;
+          }
+        }
+        setExercises([]);
+      })
+      .catch(() => {
+        setExercises([]);
+      });
     setFilter("All");
   }, [selectedDay]);
 
   const toggleExercise = (id) => {
-    // TODO: POST /api/progress/log { exerciseId: id, loggedDate: selectedDay }
-    setExercises((prev) => prev.map((e) => e.id === id ? { ...e, done: !e.done } : e));
+    setExercises((prev) => prev.map((e) => {
+      if (e.id === id) {
+        const newDone = !e.done;
+        if (newDone && typeof id === "number") {
+          progressAPI.log({
+            exerciseId: id,
+            loggedDate: selectedDay,
+            weightKg: 50,
+            repsDone: 10,
+          }).catch(() => {});
+        }
+        return { ...e, done: newDone };
+      }
+      return e;
+    }));
   };
 
   const filteredExercises = filter === "All" ? exercises : exercises.filter((e) => e.muscle === filter);
@@ -73,7 +120,7 @@ export default function WorkoutPlan() {
 
       {exercises.length > 0 ? (
         <>
-          <div className="wp-workout-header">
+          <div className="wp-workout-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div className="wp-workout-title">{workoutTitle}</div>
               <div className="wp-workout-meta">
@@ -82,6 +129,9 @@ export default function WorkoutPlan() {
                 <span className="wp-meta-tag"><Dumbbell size={13} /> {[...new Set(exercises.map((e) => e.muscle))].length} muscle groups</span>
               </div>
             </div>
+            <button className="btn btn-outline" onClick={handleExportPDF} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 8, fontSize: 13 }}>
+              <Download size={15} /> Export PDF
+            </button>
           </div>
           {exercises.length > 3 && (
             <div className="wp-filter-row">

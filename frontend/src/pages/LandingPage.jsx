@@ -1,11 +1,34 @@
 import { useEffect, useState } from "react";
-import { CheckCircle2, ArrowRight, Check } from "lucide-react";
+import { CheckCircle2, ArrowRight, Check, Users, Dumbbell, Award, Flame } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FEATURES, HOW_IT_WORKS, PLANS, STATS } from "../data/landingData";
+import { publicAPI } from "../services/api";
 
 export default function LandingPage() {
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const [liveStats, setLiveStats] = useState([
+    { label: "Active Members", value: "200+", icon: Users },
+    { label: "Expert Trainers", value: "6", icon: Award },
+    { label: "Workouts Tracked", value: "1,500+", icon: Dumbbell },
+    { label: "Member Satisfaction", value: "99%", icon: Flame },
+  ]);
+
+  useEffect(() => {
+    publicAPI.getLandingStats()
+      .then((res) => {
+        if (res) {
+          setLiveStats([
+            { label: "Active Members", value: `${res.totalMembers || 200}+`, icon: Users },
+            { label: "Expert Trainers", value: `${res.activeTrainers || 6}`, icon: Award },
+            { label: "Workouts Tracked", value: `${res.totalWorkouts || 1500}+`, icon: Dumbbell },
+            { label: "Member Satisfaction", value: res.satisfactionRate || "99%", icon: Flame },
+          ]);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="root">
@@ -13,7 +36,7 @@ export default function LandingPage() {
       <section id="hero" className="hero">
         <div className="hero-inner">
           <div className="hero-content">
-            <div className="hero-badge"><CheckCircle2 size={16} /> Trusted by 200+ gym members in Sri Lanka</div>
+            <div className="hero-badge"><CheckCircle2 size={16} /> Trusted by gym members in Sri Lanka</div>
             <h1 className="hero-title">Your gym, managed <span className="hero-accent">smarter</span></h1>
             <p className="hero-desc">Track memberships, follow personalized workout plans, and monitor your progress — all from one clean, easy-to-use platform.</p>
             <div className="hero-btns">
@@ -24,7 +47,7 @@ export default function LandingPage() {
         </div>
         
         <div className="stats-bar">
-          {STATS.map((s) => (
+          {liveStats.map((s) => (
             <div key={s.label} className="stat-item">
               <span className="stat-value">
                 {s.value}
@@ -103,7 +126,6 @@ export default function LandingPage() {
         </div>
       </section>
       <Footer />
-      
     </div>
   );
 }
