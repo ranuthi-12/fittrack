@@ -24,8 +24,6 @@ public class DataSeeder implements CommandLineRunner {
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ProgressLogRepository progressLogRepository;
     private final NotificationRepository notificationRepository;
-    private final AttendanceLogRepository attendanceLogRepository;
-    private final ChatMessageRepository chatMessageRepository;
     private final ActivityLogRepository activityLogRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -329,32 +327,7 @@ public class DataSeeder implements CommandLineRunner {
                 ActivityLog.builder().title("Saman has a new plan assigned: Weight Loss Circuit").color("yellow").displayTime("3 days ago").build()
         ));
 
-        // ───────────────────────────────────────────────
-        // 8. Attendance Logs
-        // ───────────────────────────────────────────────
-        attendanceLogRepository.saveAll(List.of(
-                AttendanceLog.builder().member(member1).planName("Monthly").status("Success").checkInTime(LocalDateTime.now().minusHours(1)).build(),
-                AttendanceLog.builder().member(member3).planName("Quarterly").status("Success").checkInTime(LocalDateTime.now().minusHours(3)).build(),
-                AttendanceLog.builder().member(member2).planName("Monthly").status("Success").checkInTime(LocalDateTime.now().minusHours(20)).build(),
-                AttendanceLog.builder().member(member4).planName("Monthly").status("Denied (Expired)").checkInTime(LocalDateTime.now().minusHours(5)).build()
-        ));
-
-        // ───────────────────────────────────────────────
-        // 9. Chat Messages (one thread per trainer-member pair)
-        // ───────────────────────────────────────────────
-        chatMessageRepository.saveAll(List.of(
-                ChatMessage.builder().sender(trainerUser1).receiver(member1).messageText("Hey Ranuthi! Great progress on yesterday's deadlift session \uD83D\uDCAA").createdAt(LocalDateTime.now().minusHours(2)).isRead(true).build(),
-                ChatMessage.builder().sender(member1).receiver(trainerUser1).messageText("Thanks Coach! Should I increase weight on the bench press tomorrow?").createdAt(LocalDateTime.now().minusHours(1).minusMinutes(50)).isRead(true).build(),
-                ChatMessage.builder().sender(trainerUser1).receiver(member1).messageText("Yes, add 2.5kg each side for your first 2 sets. Keep strict form!").createdAt(LocalDateTime.now().minusHours(1).minusMinutes(40)).isRead(true).build(),
-
-                ChatMessage.builder().sender(trainerUser1).receiver(member2).messageText("Nice work finishing the full body plan this week, Nimal!").createdAt(LocalDateTime.now().minusHours(6)).isRead(false).build(),
-
-                ChatMessage.builder().sender(member3).receiver(trainerUser2).messageText("Hi Amali, is it okay to swap today's run for the bike instead?").createdAt(LocalDateTime.now().minusHours(4)).isRead(true).build(),
-                ChatMessage.builder().sender(trainerUser2).receiver(member3).messageText("Sure, the bike works just as well — aim for the same 25 minutes.").createdAt(LocalDateTime.now().minusHours(3).minusMinutes(45)).isRead(false).build(),
-
-                ChatMessage.builder().sender(trainerUser3).receiver(member4).messageText("Saman, don't forget to renew your membership — I've got your new circuit ready!").createdAt(LocalDateTime.now().minusHours(10)).isRead(false).build()
-        ));
-
+        
         // ───────────────────────────────────────────────
         // 10. Notifications (every member gets some, so no
         //     one's inbox is empty in the demo)
