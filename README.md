@@ -1,6 +1,6 @@
 🏋️ FitTrack — Gym Membership & Workout Tracking System
 
-FitTrack is a web-based gym management system built as a university OOP group project. It allows gym members to manage their memberships and track workout progress, trainers to assign and monitor workout plans and admins to manage the entire gym from a single dashboard.
+FitTrack is a web-based gym management system built as a university OOP group project. It allows gym members to manage their memberships and track workout progress, trainers to assign and monitor workout plans, and admins to manage the entire gym from a single dashboard.
 
 ## 📖 About the Project
 
@@ -21,22 +21,26 @@ Many small local gyms in Sri Lanka still manage memberships and workout plans ma
 ## ✨ Features
 
 ### 👤 Member
-- Register and purchase a membership plan
-- View membership status and expiry date
-- View personalized workout plan assigned by trainer
-- Log daily workout progress
-- Receive notifications before membership expires
+- Self-register and purchase a membership plan (Monthly / Quarterly / Annual)
+- View membership status, expiry date, and payment history — and renew online
+- View a personalized workout plan assigned by their trainer
+- Log daily workout progress (weight, reps, sets) and view progress history / personal records
+- Browse a searchable exercise library (by name, category, or muscle group)
+- View a digital membership pass for gym check-in
+- Receive and manage in-app notifications (workout assignments, membership reminders, achievements)
 
 ### 💪 Trainer
 - View list of assigned members
 - Create and assign personalized workout plans
-- Monitor each member's workout progress
+- Monitor each assigned member's logged workout progress
 
 ### 🔧 Admin
-- Manage all members and membership plans
+- Manage all member accounts
+- Add and manage trainer accounts
 - Track all payments and revenue
-- Add and manage trainers
-- View membership reports and statistics
+- View gym-wide reports and statistics (new members per month, revenue growth)
+
+> **Note on registration:** only Members can self-register through the public sign-up page. Trainer and Admin accounts are created by an existing Admin (not publicly self registered), since those roles have access to other users' data.
 
 ---
 
@@ -46,10 +50,11 @@ Many small local gyms in Sri Lanka still manage memberships and workout plans ma
 |---|---|
 | **Frontend** | React.js |
 | **Backend** | Java with Spring Boot |
+| **Security** | Spring Security + JWT (stateless authentication, role-based access control) |
 | **Database** | MySQL |
-| **ORM** | Hibernate |
+| **ORM** | Hibernate / JPA |
 | **Version Control** | Git and GitHub |
-| **Deployment** | Vercel (Frontend) · Render (Backend) |
+| **Frontend Deployment** | Vercel |
 
 ---
 
@@ -62,13 +67,15 @@ fittrack/
 │   ├── public/
 │   └── src/
 │       ├── components/              # Reusable UI components
-│       │   ├── Navbar.jsx
-│       │   ├── Footer.jsx
-│       │   └── Sidebar.jsx
+│       │   ├── MemberLayout.jsx
+│       │   └── DigitalPassModal.jsx
 │       ├── pages/                   # All page screens
-│       │   ├── Landing.jsx
+│       │   ├── LandingPage.jsx
 │       │   ├── Login.jsx
 │       │   ├── Register.jsx
+│       │   ├── ExerciseLibrary.jsx
+│       │   ├── ProfileSettings.jsx
+│       │   ├── NotFound.jsx
 │       │   ├── member/
 │       │   │   ├── MemberHome.jsx
 │       │   │   ├── Membership.jsx
@@ -76,39 +83,55 @@ fittrack/
 │       │   │   ├── Progress.jsx
 │       │   │   └── Notifications.jsx
 │       │   ├── trainer/
-│       │   │   ├── TrainerHome.jsx
+│       │   │   ├── TrainerDashboard.jsx
 │       │   │   ├── MyMembers.jsx
 │       │   │   ├── AssignPlan.jsx
 │       │   │   └── MonitorProgress.jsx
 │       │   └── admin/
-│       │       ├── AdminHome.jsx
+│       │       ├── AdminDashboard.jsx
 │       │       ├── ManageMembers.jsx
-│       │       ├── PaymentTracking.jsx
 │       │       ├── ManageTrainers.jsx
+│       │       ├── PaymentTracking.jsx
 │       │       └── Reports.jsx
-│       ├── services/                # API call functions
+│       ├── services/                # API call functions (api.js)
 │       └── App.jsx
 │
 ├── backend/                         # Java Spring Boot backend
-│   └── src/main/java/com/fittrack/
-│       ├── model/                   # OOP classes
-│       │   ├── User.java
-│       │   ├── Member.java
+│   └── src/main/java/com/fittrack/backend/
+│       ├── model/                   # JPA entities
+│       │   ├── User.java            # single entity for all roles, via a Role enum
 │       │   ├── Trainer.java
-│       │   ├── Admin.java
+│       │   ├── TrainerMember.java   # links a Trainer to their assigned Members
 │       │   ├── Membership.java
 │       │   ├── WorkoutPlan.java
 │       │   ├── WorkoutDay.java
 │       │   ├── Exercise.java
 │       │   ├── ProgressLog.java
-│       │   └── Notification.java
+│       │   ├── Notification.java
+│       │   ├── ActivityLog.java
+│       │   └── AttendanceLog.java
 │       ├── controller/              # REST API endpoints
+│       │   ├── AuthController.java
+│       │   ├── UserController.java
+│       │   ├── MembershipController.java
+│       │   ├── WorkoutController.java
+│       │   ├── ExerciseController.java
+│       │   ├── ProgressController.java
+│       │   ├── NotificationController.java
+│       │   ├── TrainerController.java
+│       │   ├── AdminController.java
+│       │   └── PublicController.java
 │       ├── service/                 # Business logic layer
-│       ├── repository/              # Database query layer
+│       ├── repository/              # Spring Data JPA query layer
+│       ├── security/                # JWT filter, JWT util, security config
+│       ├── exception/                # Global exception handling
+│       ├── config/                  # DataSeeder and app configuration
 │       └── FitTrackApplication.java
 │
 └── README.md
 ```
+
+> **Note:** roles (Member, Trainer, Admin) are modelled as a single `User` entity with a `Role` enum, rather than separate subclasses — this keeps authentication and shared account fields (email, password, profile) in one place, while `Trainer` is a separate linked entity only for trainer-specific data (specialization, assigned members).
 
 ---
 
@@ -174,5 +197,14 @@ npm run dev
 ```
 
 Frontend runs on: `http://localhost:5173`
+
+---
+
+## 🧭 Roadmap
+
+- [ ] Real, scannable QR-code generation for the digital membership pass (currently a static visual placeholder)
+- [ ] In-app chat between members and trainers
+- [ ] Integration with a real payment gateway
+- [ ] Deployment to a hosting provider
 
 ---
